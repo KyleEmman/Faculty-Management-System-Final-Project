@@ -1,0 +1,61 @@
+{% extends template %}
+
+{% block content %}
+
+<script>
+  document.getElementById('subjectsBTN').classList.add('active')
+</script>
+    <div id="content" style="padding:1%;">
+    <!--CONTENT-->
+    <h1 style="color:#2c3e50;font-weight: bold;">SUBJECTS</h1>
+
+    <div class="" style="width:100%">
+      <input class="form-control" id="myInput" type="text" placeholder="Search..">
+      <a href="{% url 'addSubject' %}"><button type="button" class="btn btn-success" style="margin-top:1%;margin-bottom:1%;float:right;">Add Subject</button></a>
+      <br>
+      <table class="table table-bordered table-striped table table-hover" style="color:#2c3e50">
+        <thead>
+          <tr >
+            <th>Subject Code</th>
+            <th>Subject Title</th>
+            <th>Units</th>
+            <th>Course</th>
+            
+          </tr>
+        </thead>
+        <tbody id="myTable">
+          {% for subject in subjects %}
+        <tr onclick="edit('editSubject/{{subject.id}}')">
+            <td>{{subject.code}}</td>
+            <td>{{subject.title}}</td>
+            <td>{{subject.units}}</td>
+            <td>{{subject.course}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    
+
+    </div>
+    
+    <script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+
+    function edit(url) {
+      window.location = url
+    }
+    
+    </script>
+
+
+    </div>  
+    
+
+{% endblock content %}

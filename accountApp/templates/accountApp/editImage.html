@@ -1,0 +1,37 @@
+{% extends template %}
+
+{% block content %}
+<script>
+    document.getElementById('userProfileBTN').classList.add('active')
+</script>
+{% load static %}
+<div id="content" style="padding:1%;">
+    <!--CONTENT-->
+    <h1 style="color:#2c3e50;font-weight: bold;">CHANGE DISPLAY PICTURE</h1>
+
+      <div style="width:100%;  background-color: #FCFFFD; box-shadow: 0 3px 10px rgb(0 0 0 / 0.2) ;border-radius: 15px; height:1000px;margin-top: 150px;">
+          <img src="{{ user.upload.url }}" class="rounded-circle img-fluid" style="object-fit: cover; border: 2px solid white; box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);width: 200px; height: 200px;  margin-left:40%;text-align: center; margin-top: -80px;" alt="Avatar"/>
+        <!-- user.siteusers.profilePicture.url -->
+          <div style="margin-left: 50px;margin-right: 50px;">
+            <form method="POST" action = "" enctype="multipart/form-data">
+              {% csrf_token %}
+              {% for field in form %}
+              <div class="form-group" style="margin-top: 1%; color:#2c3e50">
+                <label for="upload">{{field.label}}</label>
+                {{ field }}
+                <div class = "text-danger">
+                  {{field.errors}}
+                </div>
+              </div>
+              {% endfor %}
+              
+              <a onclick="history.back()"><button type="button" class="btn" style="background-color:#2c3e50;color:white;float: left; margin-top: 2%;">Back</button></a>
+              <button type="submit" class="btn btn-success" style="float: right; margin-top: 2%;">Change Profile Picture</button>
+              
+              
+            </form>
+          
+          </div>
+
+
+{% endblock content %}

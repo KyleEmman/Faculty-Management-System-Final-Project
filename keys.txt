@@ -1,0 +1,19 @@
+- placeholder for select dropdown **
+
+- notif successful registration **
+
+- redirect after change password **
+
+- report gen (must be automatic pdf) 
+
+- new tab when clicked target blank sa pdfs sa researches **
+
+- announcement kulang pa **
+
+- modal for logout change button to confirm change color to red **
+
+- validataion of registration must follow its title "This field is required" change to example "username is required" **
+
+- Activity Logs
+
+- change password bug sa admin ** 

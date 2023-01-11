@@ -1,0 +1,33 @@
+{% include 'components/auth1.html' %}
+        <nav class="nav">
+
+            <div> <a href="#" class="nav_logo"> 
+              <i class='bx bx-layer nav_logo-icon'></i> 
+              <span class="nav_logo-name">DEPT.HEAD</span> </a>
+               
+              <div class="nav_list"> 
+                
+                <a href="{% url 'announcement' %}" class="nav_link " id = "announcementsBTN"> 
+                  <i class='bx bxs-megaphone nav_icon'></i> 
+                  <span class="nav_logo-name">ANNOUNCEMENTS</span> </a> 
+
+                  <a href="{% url 'profile' %}" class="nav_link " id = "userProfileBTN"> 
+                <i class='bx bx-user nav_icon'></i> 
+                <span class="nav_logo-name">USER PROFILE</span></a> 
+                
+              <a href="{% url 'accounts' %}" class="nav_link" id = "profileListBTN"> 
+                <i class='bx bxs-book nav_icon'></i> 
+                <span class="nav_logo-name">FACULTY</span> </a> 
+                  
+              </div>
+            </div> <a onclick="return logout(`{% url 'logout' %}`)" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_logo-name">Logout</span> </a>
+        </nav>
+    </div>
+    <!--Container Main start-->
+
+    <div class="height-100 " style="background-color:white;">
+        {% block content %}
+        {% endblock %}
+
+    </div>
+{% include 'components/auth2.html' %}

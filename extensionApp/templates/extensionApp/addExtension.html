@@ -1,0 +1,37 @@
+{% extends template %}
+
+{% block content %}
+    <script>
+        document.getElementById('extensionsBTN').classList.add('active')
+    </script>
+    <div id="content" style="padding:1%;">
+    <!--CONTENT-->
+    <h1 style="color:#2c3e50;font-weight: bold;">ADD EXTENSION SERVICE</h1>
+
+    <form method = "POST" action = "">
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="form-group" style="margin-top: 1%; color:#2c3e50">
+          <label for="{{field.label}}">{{field.label}}</label>
+          {% if field.name == "department" %}
+          <select class = "form-control" name = "{{field.name}}">
+            <option selected disabled>Select your department</option>
+            {% for choice in field %}
+              {{choice}}
+            {% endfor %}
+          </select>
+          {% else %}
+            {{field}}
+          {% endif %}
+
+          <div class="text-danger">
+            {{field.errors}}
+          </div>
+      </div>
+      {% endfor %}
+        <button type="submit" class="btn btn-success" style="float:right; margin-top: 2%;">Add Extension</button>
+        <a href="{% url 'extensions' %}"><button type="button" class="btn btn-primary" style="background-color:#2c3e50;float:left; margin-top: 2%; margin-right: 1%;">Back</button></a>
+      </form>
+    </div>  
+    
+{% endblock content %}

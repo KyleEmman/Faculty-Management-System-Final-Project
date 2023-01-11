@@ -1,0 +1,158 @@
+{% extends template %}
+
+{% block content %}
+{% load static %}
+<script>
+  document.getElementById('announcementsBTN').classList.add('active')
+</script>
+<style>
+  @media print {
+    body * {
+        visibility: hidden;
+    }
+    * {
+        margin: 0;
+    }
+    #main-table, #title, #main-table * {
+      visibility: visible;
+    }
+  }
+</style>
+
+{% if request.user.userLevel == 0 %}
+<div id="content" style="padding:1%;">
+  <!--CONTENT-->
+  <h1 style="color:#2c3e50;font-weight: bold;" id="title">ANNOUNCEMENTS</h1>
+
+  <div class="" style="width:100%">
+    <input class="form-control" id="myInput" type="text" placeholder="Search..">
+    <br>
+    <a href="{% url 'addAnnouncement' %}"><button type="button" class="btn btn-success" style="float:right;margin-top: 1%;margin-bottom: 1%;">Add Announcement</button></a>
+    <div id="temp-table">
+      <h1 style="color:#2c3e50;font-weight: bold; display: none; font-size: medium;" id="hidden-title">Document: Announcements</h1>
+      <h1 style="color:#2c3e50;font-weight: bold; display: none; font-size: medium;" id="hidden-title">Printed by: {{request.user.username}}</h1>
+    </div>
+    <table class="table table-bordered table-striped table table-hover" style="color:#2c3e50" id="main-table">
+      <thead>
+        <tr >
+          <th>Announcement Title</th>
+          <th>Announcement</th>
+          <th>Username</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody id="myTable">
+          {% for announcement in announcements %}
+          <tr data-id="{{announcement.id}}">
+            <td>{{announcement.title}}</td>
+            <td>{{announcement.content}}</td>
+            <td>{{announcement.user.username}}</td>
+            <td>{{announcement.created}}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+    
+    
+    <button type="button" onclick="report('Announcements_Report')" class="btn btn-success" style="float:right;">Generate Report</button>
+
+  </div>
+  
+  <script>
+  $(document).ready(function(){
+    $("#myInput").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#myTable tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  });
+
+  document.querySelectorAll('tr').forEach(function(tr) {
+  tr.addEventListener('click', function() {
+    window.location = '/announcement/' + tr.dataset.id;
+  });
+});
+
+  function show(id){
+
+  }
+  </script>
+
+
+</div>
+{% else %}
+    <div id="content" style="padding:1%;">
+    <!--CONTENT-->
+    <h1 style="color:#2c3e50;font-weight: bold;">ANNOUNCEMENTS</h1>
+
+    <div class="" style="width:100%;">
+      <input class="form-control" id="myInput" type="text" placeholder="Search..">
+
+      <table class=" table-hover" style="color:#2c3e50;background-color:#ffffff; border-spacing: 10px; border-collapse: separate;margin-top:30px;width: 100%;">
+        <thead>
+
+        </thead>
+          {% if request.user.userLevel != 1 %}
+            <a href="{% url 'addAnnouncement' %}"><button type="button" class="btn btn-success" style="float:right;margin-top: 1%;margin-bottom: 1%;">Add Announcement</button></a>
+          {% endif %}
+        <tbody id="myTable">
+          {% for announcement in announcements %}
+          <tr data-id="{{announcement.id}}">
+            <td style=" padding: 1%; box-shadow: 0 3px 10px rgb(0 0 0 / 0.2); border-radius: 1%; "> 
+             
+              <img src="{{announcement.user.upload.url}}" class="rounded-circle" style="width: 100px; height: 100px;margin-left: 2%; margin-top: 20px;" alt="Avatar"/>
+              <!-- insert username here -->
+              <h2 style="display: inline; margin-left: 1%;">{{announcement.user.firstName}} {{announcement.user.lastName}}</h2>
+
+              <!-- insert date -->
+              <p style="float:right;margin-right: 1%;margin-top: 2%;">{{announcement.created}}</p>
+
+              <!-- insert user role here -->
+              {% if announcement.user.userLevel == 2 %}
+                <h5 style="margin-top: -2%; margin-left: 7.5%; color:#555;">Department Head</h5>
+              {% elif announcement.user.userLevel == 3 %}
+                <h5 style="margin-top: -2%; margin-left: 7.5%; color:#555;">Research Coordinator</h5>
+              {% elif announcement.user.userLevel == 4 %}
+                <h5 style="margin-top: -2%; margin-left: 7.5%; color:#555;">Extension Coordinator</h5>
+              {% else %}
+                <h5 style="margin-top: -2%; margin-left: 7.5%; color:#555;">Admin</h5>
+              {% endif %}
+              <!-- insert content here -->
+
+               <!-- announcement title --> 
+               <h3 style="margin-top:2%;margin-left: 2%;color:#555;">{{announcement.title}}</h3>
+
+              <p style="margin-left: 2%;margin-right: 2%;margin-top: 1%; text-align: justify;">{{announcement.content}}</p>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+
+    </div>
+    
+    <script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+
+
+    document.querySelectorAll('tr').forEach(function(tr) {
+  tr.addEventListener('click', function() {
+    window.location = '/announcement/' + tr.dataset.id;
+  });
+});
+
+
+    </script>
+    </div>  
+{% endif %}
+
+{% endblock content %}

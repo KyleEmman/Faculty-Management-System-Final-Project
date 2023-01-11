@@ -1,0 +1,89 @@
+{% extends template %}
+
+{% block content %}
+<script>
+    document.getElementById('profileListBTN').classList.add('active')
+</script>
+<style>
+  @media print {
+    body * {
+        visibility: hidden;
+    }
+    * {
+        margin: 0;
+    }
+    #main-table, #title, #main-table * {
+      visibility: visible;
+    }
+  }
+</style>
+<div id="content" style="padding:1%;">
+    <!--CONTENT-->
+    <h1 style="color:#2c3e50;font-weight: bold;" id="title">USERS</h1>
+
+    <div class="" style="width:100%">
+      <input class="form-control" id="myInput" type="text" placeholder="Search..">
+      <br>
+      <div id="temp-table">
+        <h1 style="color:#2c3e50;font-weight: bold; display: none; font-size: medium;" id="hidden-title">Document: Accounts</h1>
+        <h1 style="color:#2c3e50;font-weight: bold; display: none; font-size: medium;" id="hidden-title">Printed by: {{request.user.username}}</h1>
+      </div>
+      
+      <table class="table table-bordered table-striped table table-hover" style="color:#2c3e50" id="main-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>User Type</th>
+          </tr>
+        </thead>
+        <tbody id="myTable">
+        {% for account in accounts %}
+        <tr data-id="{{account.id}}">
+                <td>{{account.firstName}} {{account.lastName}}</td>
+                <td>{{account.username}}</td>
+                <td>{{account}}</td>
+                <td>{{account.department}}</td>
+                {% if account.userLevel == 1 %}
+                    <td>Faculty</td>
+                {% elif account.userLevel == 2 %}
+                    <td>Department Head</td>
+                {% elif account.userLevel == 3 %}
+                    <td>Research Coordinator</td>
+                {% elif account.userLevel == 4 %}
+                    <td>Extension Coordinator</td>
+                {% else %}
+                    <td>Administrator</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      
+      <button type="button" onclick="report('Accounts_Report')" class="btn btn-success" style="float:right;">Generate Report</button>
+
+    </div>
+    
+    <script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+
+    document.querySelectorAll('tr').forEach(function(tr) {
+  tr.addEventListener('click', function() {
+    window.location = '/profile/' + tr.dataset.id;
+  });
+});
+    </script>
+
+    </div> 
+
+{% endblock content %}
+    

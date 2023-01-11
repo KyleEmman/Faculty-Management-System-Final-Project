@@ -1,0 +1,71 @@
+{% extends 'layouts/authenticationLayout.html' %}
+
+{% block content %}
+
+<!-- {% if messages %}
+<ul class="messages"></ul>
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %} -->
+<!-- {% for message in messages %}
+    <div class="alert alert-warning">
+        {{message}}
+    </div>
+{% endfor %} -->
+
+<h1 class="card-title" style="color:#2c3e50;text-align: center;">Register</h1>
+<form method="POST" class="my-login-validation" novalidate="" >
+
+    {% csrf_token %}
+    {% for field in form %}
+        <label for="{{field.label}}" style="color: #2c3e50;">{{field.label_tag}}</label>
+        <div class="form-group">
+            {% if field.name == "department" or field.name == "userLevel" %}
+                <select class = "form-control" name = "{{field.name}}">
+                    <option selected disabled>
+                        {% if field.name == "department" %}
+                        Select your department
+                        {% else %}
+                        User Type
+                        {% endif %}
+                    </option>
+                    {% for choice in field %}
+                        {{choice}}
+                    {% endfor %}
+                </select>
+            {% else %}
+                {{field}}
+            {% endif %}
+        </div> 
+        <div class="text-danger">
+            {{field.errors}}
+        </div>
+    {% endfor %}
+
+    <div class="form-group m-0">
+        <button type="submit" class="btn btn-secondary btn-block">
+            Register
+        </button>
+    </div>
+    <div class="mt-4 text-center">
+        Already have an account? <a href="{% url 'login' %}" style="color:#2c3e50;">Login</a>
+    </div>
+</form>
+
+{% if messages %}
+    {% for message in messages %}
+        {% if 'success' in message.tags %}
+            <script>
+            Swal.fire('{{message}}').then(result => {
+                if (result.isConfirmed) {
+                    location.href = "/login"
+                }
+            })
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% endblock content %}

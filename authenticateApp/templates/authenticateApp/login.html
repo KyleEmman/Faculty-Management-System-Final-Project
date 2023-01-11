@@ -1,0 +1,43 @@
+{% extends 'layouts/authenticationLayout.html' %}
+
+{% block content %}
+<h1 class="card-title" style="color:#2c3e50;text-align: center;">Login</h1>
+
+<form action = "{% url 'validate-login' %}" method="POST" class="my-login-validation" novalidate="">
+    {% csrf_token %}
+    {% for message in messages %}
+    
+        <div class="alert alert-warning">
+            {{message}}
+        </div>
+        
+
+    {% endfor %}
+    
+    <div class="form-group">
+        <label for="username" style="color: #2c3e50;">Username/Email</label>
+        <input class="form-control" id="username" type="text" name="username" placeholder="Username" required>
+        <div class="invalid-feedback">
+            Username is invalid
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="password" style="color: #2c3e50;">Password</label>
+        <input class="form-control" type="password" name="password" id="password" placeholder="password" required>
+        <div class="invalid-feedback">
+            Password is invalid
+        </div>
+    </div>
+    <div class="form-group mt-2">
+        <button type="submit" class="btn btn-secondary btn-block">
+            Login
+        </button>
+    </div>
+</form>
+<div class="mt-4 text-center" style="color:#2c3e50;">
+    Don't have an account? <a href="{% url 'register' %}" style="color:#2c3e50;">Register</a>
+</div>
+
+            
+
+{% endblock content %}

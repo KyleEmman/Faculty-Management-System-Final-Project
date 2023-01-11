@@ -1,0 +1,70 @@
+{% extends template %}
+
+{% block content %}
+<script>
+    document.getElementById('logBTN').classList.add('active')
+</script>
+<style>
+    @media print {
+      body * {
+          visibility: hidden;
+      }
+      * {
+          margin: 0;
+      }
+      #main-table, #title, #main-table * {
+        visibility: visible;
+      }
+    }
+  </style>
+  <div id="content" style="padding:1%;">
+      <!--CONTENT-->
+      <h1 style="color:#2c3e50;font-weight: bold;" id="title">ACTIVITY LOGS</h1>
+  
+      <div class="" style="width:100%">
+        <input class="form-control" id="myInput" type="text" placeholder="Search..">
+        <br>
+        <div id="temp-table">
+          <h1 style="color:#2c3e50;font-weight: bold; display: none; font-size: medium;" id="hidden-title">Document: Activity Logs</h1>
+          <h1 style="color:#2c3e50;font-weight: bold; display: none; font-size: medium;" id="hidden-title">Printed by: {{request.user.username}}</h1>
+        </div>
+        
+        <table class="table table-bordered table-striped table table-hover" style="color:#2c3e50" id="main-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Activity</th>
+              <th>Date</th>
+
+            </tr>
+          </thead>
+          <tbody id="myTable">
+          {% for log in logs %}
+        <tr>
+            <td>{{log.name}}</td>
+            <td>{{log}}</td>
+            <td>{{log.created}}</td>
+        </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        
+      <button type="button" onclick="report('Activity-Logs_Report')" class="btn btn-success" style="margin-top:1%;margin-bottom:1%;float:right;">Generate Report</button>
+  
+      </div>
+      
+      <script>
+      $(document).ready(function(){
+        $("#myInput").on("keyup", function() {
+          var value = $(this).val().toLowerCase();
+          $("#myTable tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          });
+        });
+      });
+  
+      </script>
+  
+      </div> 
+
+{% endblock content %}

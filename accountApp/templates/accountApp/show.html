@@ -1,0 +1,92 @@
+{% extends template %}
+{% load static %}
+{% block content %}
+<script>
+    document.getElementById('userProfileBTN').classList.add('active')
+</script>
+
+<div id="content" style="padding:1%;">
+    <!--CONTENT-->
+    <h1 style="color:#2c3e50;font-weight: bold;">USER PROFILE</h1>
+
+      <div style="width:100%;  background-color: #FCFFFD; box-shadow: 0 3px 10px rgb(0 0 0 / 0.2) ;border-radius: 15px; height:1000px;margin-top: 150px;">
+          <a href="{% url 'editImage' id=user.id %}"><img src="{{user.upload.url}}" class="rounded-circle img-fluid" style="object-fit: cover; border: 2px solid white; box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);width: 200px; height: 200px;  margin-left:40%;text-align: center; margin-top: -80px;" alt="Avatar"/>
+            </a>
+          <div style="margin-left: 50px;margin-right: 50px;">
+            <form method = "POST" action = "">
+                {% csrf_token %}
+
+                {% for field in form %}
+                  {% if field.label == "Department" and request.user.userLevel == 0 %}
+
+                  {% else %}
+                  <div class="form-group" style="margin-top: 1%; color:#2c3e50">
+                      <label for="{{ field.label}}">{{ field.label }}</label>
+                      {{field}}
+                  </div>
+                  
+                  <div class="text-danger">
+                    {{field.errors}}
+                  </div>
+                  {% endif %}
+                {% endfor %}
+              <div class="form-group" style="margin-top: 1%; color:#2c3e50">
+              {% if request.user.userLevel != 0 %}
+                <label for="exampleInputPassword1">User Type</label>
+                {% if user.userLevel == 1 %}
+                    <input type="text" class="form-control" id="exampleInputPassword1" value="Faculty" disabled>
+                {% elif user.userLevel == 2 %}
+                    <input type="text" class="form-control" id="exampleInputPassword1" value="Department Head" disabled>
+                {% elif user.userLevel == 3 %}
+                    <input type="text" class="form-control" id="exampleInputPassword1" value="Research Coordinator" disabled>
+                {% elif user.userLevel == 4 %}
+                    <input type="text" class="form-control" id="exampleInputPassword1" value="Extension Coordinator" disabled>
+                    {% else %}
+                    <input type="text" class="form-control" id="exampleInputPassword1" value="Administrator" disabled>
+                    {% endif %}
+              {% elif user.userLevel == 0 %}
+                  <label for="exampleInputPassword1">User Type</label>
+                    <input type="text" class="form-control" id="exampleInputPassword1" value="Administrator" disabled>
+              {% endif %}
+            </div>
+              <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+              <a href="" id = "my-anchor-tag"><button type="button" class="btn" style="background-color:#c43b3b;color:white;float: left; margin-top: 2%;">Delete Profile</button></a>
+
+              <a href="{% url 'editPassword' id=user.id %}"><button type="button" class="btn" style="background-color:#2c3e50;color:white;float: right; margin-top: 2%;">Change Password</button></a>
+              <button type="submit" class="btn btn-success" style="float:right; margin-top: 2%;margin-right: 1%;">Save Changes</button>
+              
+            </form>
+            
+            {% if messages %}
+              {% for message in messages %}
+                  {% if 'success' in message.tags %}
+                      <script>
+                        Swal.fire('{{message}}')  
+                      </script>
+                     
+                  {% endif %}
+              {% endfor %}
+            {% endif %}
+            <script>
+  // Add an event listener to the anchor tag that will open the SweetAlert window when the anchor tag is clicked
+  document.getElementById('my-anchor-tag').addEventListener('click', function(event) {
+    // Prevent the anchor tag from navigating to the URL
+    event.preventDefault();
+
+    // Open the SweetAlert window
+    swal({
+      title: 'Are you sure?',
+      text: 'This will delete all of this user data!',
+      icon: 'warning',
+      buttons: ['Cancel', 'Delete'],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        window.location.href = "{% url 'deleteProfile' id=user.id %}";
+      }
+    });
+  });
+            </script>
+          </div>
+        
+{% endblock content %}

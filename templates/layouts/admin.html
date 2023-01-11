@@ -1,0 +1,46 @@
+{% include 'components/auth1.html' %}
+<nav class="nav">
+
+    <div> <a href="#" class="nav_logo"> 
+      <i class='bx bx-layer nav_logo-icon'></i> 
+      <span class="nav_logo-name">ADMIN</span> </a>
+       
+      <div class="nav_list"> 
+        
+          
+        <a href="{% url 'accounts' %}" class="nav_link " id = "profileListBTN"> 
+              <i class='bx bx-user nav_icon'></i> 
+              <span class="nav_logo-name">USERS</span></a> 
+              
+              <a href="{% url 'subjects' %}" class="nav_link " id = "subjectsBTN"> 
+              <i class='bx bxs-book nav_icon'></i> 
+              <span class="nav_logo-name">SUBJECTS</span> </a> 
+              
+              <a href="{% url 'researches' %}" class="nav_link" id = "researchesBTN"> 
+              <i class='bx bx-book-bookmark nav_icon'></i> 
+              <span class="nav_logo-name">RESEARCHES</span> </a> 
+
+              <a href="{% url 'extensions' %}" class="nav_link" id = "extensionsBTN"> 
+                <i class='bx bxs-extension nav_icon' ></i>
+                <span class="nav_logo-name">EXTENSION</span> </a> 
+              
+                <a href="{% url 'announcement' %}" class="nav_link " id = "announcementsBTN"> 
+              <i class='bx bxs-megaphone nav_icon'></i> 
+              <span class="nav_logo-name">ANNOUNCEMENTS</span> </a> 
+
+              <a href="{% url 'logs' %}" class="nav_link " id = "logBTN"> 
+                <i class='bx bxs-user-detail nav_icon'></i> 
+            <span class="nav_logo-name">ACTIVITY LOGS</span> </a> 
+
+            
+          </div>
+        </div> <a onclick="return logout(`{% url 'logout' %}`)" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_logo-name">Logout</span> </a>
+</nav>
+</div>
+
+<div class="height-100 " style="background-color:white;">
+    {% block content %}
+    {% endblock %}
+
+</div>
+{% include 'components/auth2.html' %}
